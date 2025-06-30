@@ -3,6 +3,7 @@ import React from "react";
 import Image from "next/image";
 import Button from "./components/Button";
 
+
 interface ItemProps {
     id: string;
     name: string;
@@ -33,6 +34,7 @@ const Item: React.FC<ItemProps> = ({
 
     return (
         <div className="rounded-lg border border-gray-300 bg-white relative text-black p-4 mb-4 max-w-md">
+        <Image src="/iphone.jpeg" alt="iphone" width={100} height={40} />
             <div className="flex items-center justify-between mb-2">
                 <span className={`px-2 py-1 rounded text-sm ${
                     type === 'lost' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'

@@ -26,6 +26,7 @@ const Header = () => {
         >
           benaam
         </div>
+                <p className="text-xl md:text-4xl md:font-bold">You have lost something?Here's how to find!</p>
         {/* Right Side: Auth/Profile */}
         <div className="relative flex items-center">
           {session?.user ? (
@@ -52,7 +53,7 @@ const Header = () => {
               </button>
               {/* Dropdown Menu */}
               {menuOpen && (
-                <div className="absolute right-0 mt-2 w-40 bg-white text-gray-800 rounded shadow-lg z-50 animate-fade-in">
+                <div className="absolute right-0 mt-4 w-40 bg-white text-gray-800 rounded shadow-lg z-50 animate-fade-in">
                   <div className="px-4 py-2 border-b">
                     <span className="font-semibold">
                       {session.user.name || session.user.email}
