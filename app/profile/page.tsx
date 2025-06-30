@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { User, Item } from '@/types';
+import { User, Item } from '@/app/lib/definitions';
 import Vercel from '@/public/vercel.svg'
 // Mock data types
 interface User {
