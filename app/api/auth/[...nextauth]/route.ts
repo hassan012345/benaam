@@ -1,39 +1,52 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import postgres from "postgres";
+
+const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
 const handler = NextAuth({
   providers: [
     CredentialsProvider({
-      // The name to display on the sign in form (e.g. 'Sign in with...')
       name: "Credentials",
-      // The credentials is used to generate a suitable form on the sign in page.
-      // You can specify whatever fields you are expecting to be submitted.
-      // e.g. domain, username, password, 2FA token, etc.
-      // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
-        // This is where you'd connect to your database to validate credentials.
-        // For this example, we'll use a dummy user.
-        // IMPORTANT: In a real application, NEVER store passwords in plaintext.
-        // Always hash and salt passwords.
-        if (
-          credentials?.email === "test@example.com" &&
-          credentials?.password === "password"
-        ) {
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials.password) return null;
+        const users = await sql`SELECT * FROM users WHERE email = ${credentials.email}`;
+        const user = users[0];
+        if (user && user.password === credentials.password) {
           return {
-            id: "1",
-            name: "Test User",
-            email: "test@example.com",
+            id: user.id,
+            name: user.full_name,
+            email:user.email,
+            image:user.image
           };
         }
-        // Return null if user data could not be retrieved
         return null;
       },
     }),
   ],
+  pages: {
+    signIn: '/login'
+  },
+  callbacks:{
+    async jwt({token,user}){
+      if(user){
+        token.id= user.id,
+        token.name= user.name
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (token?.id) {
+        session.user.id = token.id;
+        session.user.name= token.name;
+      }
+      return session;
+    },
+  }
 });
 
 export { handler as GET, handler as POST }

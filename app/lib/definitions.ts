@@ -1,10 +1,17 @@
-export const Item = {
-    name : String,
-    description: String,
-    image: String,
+export interface Item {
+  id: string;
+  name: string;
+  image: string;
+  description: string;
+  type: "lost" | "found";
+  location: string;
+  report_date: string;
 }
-export const User = {
-    name: String,
-    email: String,
-    password: String,
+
+export type User = {
+  id: string,
+  name: string,
+  email: string,
+  phone: string,
+  password: string,
 }

@@ -1,3 +1,4 @@
+'use client';
 import React, { useState } from "react";
 import Image from "next/image";
 import { useSession, signIn, signOut } from "next-auth/react";
@@ -17,8 +18,8 @@ const Header = () => {
   };
 
   return (
-    <header className="w-full bg-gray-800 text-white shadow-md">
-      <div className="max-w-6xl mx-auto flex justify-between items-center p-4">
+    <header className="w-full bg-gray-800 text-white shadow-md sticky top-0 z-1">
+      <div className="mx-auto flex justify-between items-center p-4">
         {/* App Name/Logo */}
         <div
           className="text-2xl font-bold cursor-pointer select-none"
@@ -63,7 +64,7 @@ const Header = () => {
                     className="w-full text-left px-4 py-2 hover:bg-gray-100"
                     onClick={() => {
                       setMenuOpen(false);
-                      router.push("/profile");
+                      router.push(`/profile/${session.user.id}`);
                     }}
                   >
                     Profile
